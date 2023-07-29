@@ -28,6 +28,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('master/suppliers', [SupplierController::class, 'index'])->name('master.suppliers.index');
+Route::post('master/suppliers/datatable', [SupplierController::class, 'datatable'])->name('master.suppliers.datatable');
+Route::post('master/suppliers/store', [SupplierController::class, 'store'])->name('master.suppliers.store');
+Route::get('master/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('master.suppliers.edit');
+Route::delete('master/suppliers/{supplier}/destroy', [SupplierController::class, 'destroy'])->name('master.suppliers.destroy');
 
 Route::get('master/units', [UnitController::class, 'index'])->name('master.units.index');
 
