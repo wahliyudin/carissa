@@ -46,5 +46,9 @@ Route::get('master/products/{product}/edit', [ProductController::class, 'edit'])
 Route::delete('master/products/{product}/destroy', [ProductController::class, 'destroy'])->name('master.products.destroy');
 
 Route::get('master/stocks', [StockController::class, 'index'])->name('master.stocks.index');
+Route::post('master/stocks/datatable', [StockController::class, 'datatable'])->name('master.stocks.datatable');
+Route::post('master/stocks/store', [StockController::class, 'store'])->name('master.stocks.store');
+Route::get('master/stocks/{stock}/edit', [StockController::class, 'edit'])->name('master.stocks.edit');
+Route::delete('master/stocks/{stock}/destroy', [StockController::class, 'destroy'])->name('master.stocks.destroy');
 
 Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
