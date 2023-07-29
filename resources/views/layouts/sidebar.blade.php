@@ -44,30 +44,37 @@
         <!--- Sidemenu -->
         <ul class="side-nav">
             <li class="side-nav-item">
+                <a href="{{ route('home') }}" class="side-nav-link">
+                    <i class="uil-comments-alt"></i>
+                    <span> Dashboard </span>
+                </a>
+            </li>
+            <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#master" aria-expanded="false" aria-controls="master"
                     class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Master </span>
+                    <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="master">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="/supplier">Supplier</a>
+                            <a href="{{ route('master.suppliers.index') }}">Supplier</a>
                         </li>
                         <li>
-                            <a href="/satuan">Unit</a>
+                            <a href="{{ route('master.units.index') }}">Unit</a>
                         </li>
                         <li>
-                            <a href="">Product</a>
+                            <a href="{{ route('master.products.index') }}">Product</a>
                         </li>
                         <li>
-                            <a href="">Stock</a>
+                            <a href="{{ route('master.stocks.index') }}">Stock</a>
                         </li>
                     </ul>
                 </div>
             </li>
             <li class="side-nav-item">
-                <a href="apps-chat.html" class="side-nav-link">
+                <a href="{{ route('purchases.index') }}" class="side-nav-link">
                     <i class="uil-comments-alt"></i>
                     <span> Purchases </span>
                 </a>
