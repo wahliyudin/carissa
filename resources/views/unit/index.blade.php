@@ -31,7 +31,7 @@
                         <div class="row mb-2">
                             <div class="col-sm-5">
                                 <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#standard-modal"><i class="mdi mdi-plus-circle me-2"></i> Add
+                                    data-bs-target="#create-unit"><i class="mdi mdi-plus-circle me-2"></i> Add
                                     Units</button>
                             </div>
                             <div class="col-sm-7">
@@ -51,19 +51,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            Name
-                                        </td>
-                                        <td class="table-action">
-                                            <a href="javascript:void(0);" class="action-icon"> <i
-                                                    class="mdi mdi-eye"></i></a>
-                                            <a href="javascript:void(0);" class="action-icon"> <i
-                                                    class="mdi mdi-square-edit-outline"></i></a>
-                                            <a href="javascript:void(0);" class="action-icon"> <i
-                                                    class="mdi mdi-delete"></i></a>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -75,29 +62,32 @@
 @endsection
 
 @push('modal')
-    <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
+    <div id="create-unit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="create-unitLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="standard-modalLabel">Modal Heading</h4>
+                    <h4 class="modal-title" id="create-unitLabel">Unit</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h6>Text in a modal</h6>
-                    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                    <hr>
-                    <h6>Overflowing text to show scroll behavior</h6>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
-                        eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
-                        laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <form action="" class="row gap-2 form-unit">
+                        <input type="hidden" name="key">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                    <button class="btn btn-primary save-unit" type="button">
+                        <span class="spinner-border spinner-border-sm me-1 d-none" role="status" aria-hidden="true"></span>
+                        <span class="spin-title d-none">Loading...</span>
+                        <span class="btn-title">Simpan</span>
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -110,5 +100,6 @@
     <script src="{{ asset('assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/pages/unit.js') }}"></script>
 @endpush
