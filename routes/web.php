@@ -40,6 +40,10 @@ Route::get('master/units/{unit}/edit', [UnitController::class, 'edit'])->name('m
 Route::delete('master/units/{unit}/destroy', [UnitController::class, 'destroy'])->name('master.units.destroy');
 
 Route::get('master/products', [ProductController::class, 'index'])->name('master.products.index');
+Route::post('master/products/datatable', [ProductController::class, 'datatable'])->name('master.products.datatable');
+Route::post('master/products/store', [ProductController::class, 'store'])->name('master.products.store');
+Route::get('master/products/{product}/edit', [ProductController::class, 'edit'])->name('master.products.edit');
+Route::delete('master/products/{product}/destroy', [ProductController::class, 'destroy'])->name('master.products.destroy');
 
 Route::get('master/stocks', [StockController::class, 'index'])->name('master.stocks.index');
 

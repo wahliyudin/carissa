@@ -17,10 +17,7 @@ $(document).ready(function () {
         },
         ajax: {
             type: "POST",
-            url: "/master/suppliers/datatable",
-            data: function (d) {
-                d.search = $('input[name="search"]').val();
-            }
+            url: "/master/suppliers/datatable"
         },
         pageLength: 5,
         columns: [{

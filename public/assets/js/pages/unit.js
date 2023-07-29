@@ -17,10 +17,7 @@ $(document).ready(function () {
         },
         ajax: {
             type: "POST",
-            url: "/master/units/datatable",
-            data: function (d) {
-                d.search = $('input[name="search"]').val();
-            }
+            url: "/master/units/datatable"
         },
         pageLength: 5,
         columns: [{
