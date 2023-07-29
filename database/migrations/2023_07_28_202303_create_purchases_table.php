@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Product::class);
             $table->foreignIdFor(Supplier::class);
             $table->integer('quantity');
+            $table->string('status', 1);
             $table->timestamps();
         });
     }

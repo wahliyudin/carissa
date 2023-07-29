@@ -24,4 +24,9 @@ class Purchase extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

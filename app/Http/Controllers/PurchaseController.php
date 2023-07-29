@@ -79,4 +79,12 @@ class PurchaseController extends Controller
             throw $th;
         }
     }
+
+    public function comment(Purchase $purchase)
+    {
+        $purchase->load(['product', 'supplier', 'comments.user']);
+        return view('purchase.comment', [
+            'purchase' => $purchase
+        ]);
+    }
 }

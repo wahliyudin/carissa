@@ -55,4 +55,5 @@ Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.i
 Route::post('purchases/datatable', [PurchaseController::class, 'datatable'])->name('purchases.datatable');
 Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');
 Route::get('purchases/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+Route::get('purchases/{purchase}/comment', [PurchaseController::class, 'comment'])->name('purchases.comment');
 Route::delete('purchases/{purchase}/destroy', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
