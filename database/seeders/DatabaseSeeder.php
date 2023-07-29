@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Enums\Role;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +22,17 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        User::query()->create([
+            'name' => 'Kitchen',
+            'email' => 'kitchen@gmail.com',
+            'password' => Hash::make(1234567890),
+            'role' => Role::KITCHEN,
+        ]);
+        User::query()->create([
+            'name' => 'Purchasing',
+            'email' => 'purchase@gmail.com',
+            'password' => Hash::make(1234567890),
+            'role' => Role::PURCHASE,
+        ]);
     }
 }

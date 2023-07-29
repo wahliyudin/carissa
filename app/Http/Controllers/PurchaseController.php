@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendCommentEvent;
 use App\Http\Requests\Purchase\StoreRequest;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseController extends Controller
@@ -86,5 +89,25 @@ class PurchaseController extends Controller
         return view('purchase.comment', [
             'purchase' => $purchase
         ]);
+    }
+
+    public function send(Purchase $purchase, Request $request)
+    {
+        try {
+            $comment = $purchase->comments()->create([
+                'user_id' => auth()->user()->id,
+                'content' => $request->message,
+            ]);
+            return response()->json([
+                'user' => auth()->user()->name,
+                'time' => Carbon::make($comment->created_at)->format("H:i"),
+                'content' => $comment->content,
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        // event(new SendCommentEvent([
+        //     'message' => $comment->content
+        // ]));
     }
 }

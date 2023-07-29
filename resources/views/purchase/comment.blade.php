@@ -58,37 +58,11 @@
                         <ul class="conversation-list px-3" data-simplebar style="max-height: 300px; min-height: 300px">
                             @foreach ($purchase->comments as $comment)
                                 @if ($comment->user_id == auth()->user()->id)
-                                    <li class="clearfix">
-                                        <div class="chat-avatar">
-                                            <img src="{{ asset('assets/images/user.png') }}" class="rounded"
-                                                alt="{{ $comment->user?->name }}" />
-                                            <i>{{ $comment->created_at }}</i>
-                                        </div>
-                                        <div class="conversation-text">
-                                            <div class="ctext-wrap">
-                                                <i>{{ $comment->user?->name }}</i>
-                                                <p>
-                                                    {{ $comment->content }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="conversation-actions dropdown">
-                                            <button class="btn btn-sm btn-link" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class='uil uil-ellipsis-v'></i></button>
-
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Copy Message</a>
-                                                <a class="dropdown-item" href="#">Edit</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                @else
                                     <li class="clearfix odd">
                                         <div class="chat-avatar">
                                             <img src="{{ asset('assets/images/user.png') }}" class="rounded"
                                                 alt="{{ $comment->user?->name }}" />
-                                            <i>{{ $comment->created_at }}</i>
+                                            <i>{{ \Carbon\Carbon::make($comment->created_at)->format('H:i') }}</i>
                                         </div>
                                         <div class="conversation-text">
                                             <div class="ctext-wrap">
@@ -109,6 +83,32 @@
                                             </div>
                                         </div>
                                     </li>
+                                @else
+                                    <li class="clearfix">
+                                        <div class="chat-avatar">
+                                            <img src="{{ asset('assets/images/user.png') }}" class="rounded"
+                                                alt="{{ $comment->user?->name }}" />
+                                            <i>{{ \Carbon\Carbon::make($comment->created_at)->format('H:i') }}</i>
+                                        </div>
+                                        <div class="conversation-text">
+                                            <div class="ctext-wrap">
+                                                <i>{{ $comment->user?->name }}</i>
+                                                <p>
+                                                    {{ $comment->content }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="conversation-actions dropdown">
+                                            <button class="btn btn-sm btn-link" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class='uil uil-ellipsis-v'></i></button>
+
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Copy Message</a>
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </li>
                                 @endif
                             @endforeach
                         </ul>
@@ -117,25 +117,22 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mt-2 bg-light p-3">
-                                    <form class="needs-validation" novalidate="" name="chat-form" id="chat-form">
-                                        <div class="row">
-                                            <div class="col mb-2 mb-sm-0">
-                                                <input type="text" class="form-control border-0"
-                                                    placeholder="Enter your comment" required="">
-                                                <div class="invalid-feedback">
-                                                    Please enter your messsage
+                                    <div class="row">
+                                        <div class="col mb-2 mb-sm-0">
+                                            <textarea name="message" class="form-control border-0" placeholder="Enter your comment"></textarea>
+                                            <div class="invalid-feedback">
+                                                Please enter your messsage
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="btn-group">
+                                                <div class="d-grid">
+                                                    <button type="button" class="btn btn-success chat-send"><i
+                                                            class='uil uil-message'></i></button>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-auto">
-                                                <div class="btn-group">
-                                                    <div class="d-grid">
-                                                        <button type="submit" class="btn btn-success chat-send"><i
-                                                                class='uil uil-message'></i></button>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end col -->
-                                        </div> <!-- end row-->
-                                    </form>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row-->
                                 </div>
                             </div> <!-- end col-->
                         </div>
@@ -149,3 +146,71 @@
 
     </div> <!-- container -->
 @endsection
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('.chat-send').click(function(e) {
+                e.preventDefault();
+                var message = $('textarea[name="message"]').val();
+                if (!message) {
+                    $(".invalid-feedback").show();
+                } else {
+                    $(".invalid-feedback").hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "/purchases/{{ $purchase->getKey() }}/send",
+                        data: {
+                            message
+                        },
+                        dataType: "JSON",
+                        success: function(response) {
+                            add(response);
+                            $('textarea[name="message"]').val('');
+                            toTop();
+                        }
+                    });
+                }
+            });
+
+            function toTop() {
+                $('.conversation-list .simplebar-content-wrapper').scrollTop($(
+                    '.conversation-list .simplebar-content').height());
+            }
+
+            function add(response) {
+                $('.conversation-list .simplebar-content').append(`<li class="clearfix odd">
+                                        <div class="chat-avatar">
+                                            <img src="{{ asset('assets/images/user.png') }}" class="rounded"
+                                                alt="${response.user}" />
+                                            <i>${response.time}</i>
+                                        </div>
+                                        <div class="conversation-text">
+                                            <div class="ctext-wrap">
+                                                <i>${response.user}</i>
+                                                <p>
+                                                    ${response.content}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="conversation-actions dropdown">
+                                            <button class="btn btn-sm btn-link" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class='uil uil-ellipsis-v'></i></button>
+
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Copy Message</a>
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                            </div>
+                                        </div>
+                                    </li>`);
+            }
+            toTop();
+        });
+    </script>
+@endpush
