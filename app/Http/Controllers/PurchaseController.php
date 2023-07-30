@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Purchase\Status;
+use App\Enums\Purchase\StatusApprov;
 use App\Events\SendCommentEvent;
 use App\Http\Requests\Purchase\StoreRequest;
 use App\Models\Product;
@@ -32,15 +34,21 @@ class PurchaseController extends Controller
                 return $purchase->supplier?->name;
             })
             ->editColumn('price', function (Purchase $purchase) {
-                return $purchase->product?->price;
+                return number_format($purchase->product?->price, 0, ',', '.');
             })
             ->editColumn('quantity', function (Purchase $purchase) {
                 return $purchase->quantity;
             })
+            ->editColumn('status', function (Purchase $purchase) {
+                return $purchase->status->badge();
+            })
+            ->editColumn('status_approv', function (Purchase $purchase) {
+                return $purchase->status_approv->badge();
+            })
             ->editColumn('action', function (Purchase $purchase) {
                 return view('purchase.action', compact('purchase'));
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'status', 'status_approv'])
             ->make();
     }
 
@@ -74,6 +82,7 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         try {
+            $purchase->comments()->delete();
             $purchase->delete();
             return response()->json([
                 'message' => "Berhasil dihapus"
@@ -109,5 +118,48 @@ class PurchaseController extends Controller
         // event(new SendCommentEvent([
         //     'message' => $comment->content
         // ]));
+    }
+
+    public function approv(Purchase $purchase)
+    {
+        try {
+            $purchase->update([
+                'status' => Status::DIPESAN,
+                'status_approv' => StatusApprov::SETUJU
+            ]);
+            return response()->json([
+                'message' => 'Berhasil Diverifikasi.'
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function reject(Purchase $purchase)
+    {
+        try {
+            $purchase->update([
+                'status_approv' => StatusApprov::TOLAK
+            ]);
+            return response()->json([
+                'message' => 'Berhasil ditolak.'
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function diterima(Purchase $purchase)
+    {
+        try {
+            $purchase->update([
+                'status' => Status::DITERIMA
+            ]);
+            return response()->json([
+                'message' => 'Berhasil diterima.'
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

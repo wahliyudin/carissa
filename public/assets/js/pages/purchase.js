@@ -41,6 +41,16 @@ $(document).ready(function () {
             data: "quantity",
         },
         {
+            orderable: !0,
+            name: "status",
+            data: "status",
+        },
+        {
+            orderable: !0,
+            name: "status_approv",
+            data: "status_approv",
+        },
+        {
             orderable: false,
             name: "action",
             data: "action",
@@ -197,5 +207,58 @@ $(document).ready(function () {
 
     $('.select2').select2({
         dropdownParent: $("#create-purchase")
+    });
+
+    $('#purchases-datatable').on('click', '.diterima', function (e) {
+        e.preventDefault();
+        var key = $(this).data('key');
+        Swal.fire({
+            text: "Apa kamu yakin?",
+            icon: "warning",
+            showCancelButton: true,
+            buttonsStyling: false,
+            confirmButtonText: "Yakin!",
+            cancelButtonText: "Tidak",
+            customClass: {
+                confirmButton: "btn fw-bold btn-danger",
+                cancelButton: "btn fw-bold btn-active-light-primary"
+            }
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: `/purchases/${key}/diterima`,
+                    dataType: "JSON",
+                    success: function (response) {
+                        Swal.fire({
+                            text: response.message,
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn fw-bold btn-primary",
+                            }
+                        }).then(function () {
+                            datatable.ajax.reload();
+                        });
+                    },
+                    error: function (jqXHR) {
+                        if (jqXHR.status == 422 || jqXHR.responseJSON.message.includes("404")) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Peringatan!',
+                                text: JSON.parse(jqXHR.responseText).message,
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: jqXHR.responseText,
+                            })
+                        }
+                    }
+                });
+            }
+        });
     });
 });

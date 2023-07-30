@@ -45,14 +45,14 @@
         <ul class="side-nav">
             <li class="side-nav-item">
                 <a href="{{ route('home') }}" class="side-nav-link">
-                    <i class="uil-comments-alt"></i>
+                    <i class="uil-home-alt"></i>
                     <span> Dashboard </span>
                 </a>
             </li>
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#master" aria-expanded="false" aria-controls="master"
                     class="side-nav-link">
-                    <i class="uil-home-alt"></i>
+                    <i class="ri-dropbox-fill"></i>
                     <span> Master </span>
                     <span class="menu-arrow"></span>
                 </a>
@@ -75,7 +75,7 @@
             </li>
             <li class="side-nav-item">
                 <a href="{{ route('purchases.index') }}" class="side-nav-link">
-                    <i class="uil-comments-alt"></i>
+                    <i class="ri-shopping-bag-3-fill"></i>
                     <span> Purchases </span>
                 </a>
             </li>

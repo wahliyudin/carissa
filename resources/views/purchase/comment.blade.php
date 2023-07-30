@@ -26,8 +26,27 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="mt-3 row">
-                            <hr class="" />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button
+                                    {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
+                                    class="btn btn-success btn-approv" data-key="{{ $purchase->getKey() }}" type="button">
+                                    <span class="spinner-border spinner-border-sm me-1 d-none" role="status"
+                                        aria-hidden="true"></span>
+                                    <span class="spin-title d-none">Loading...</span>
+                                    <span class="btn-title"><i class="ri-check-fill me-1"></i>Approv</span>
+                                </button>
+                                <button
+                                    {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
+                                    class="btn btn-danger btn-reject" data-key="{{ $purchase->getKey() }}" type="button">
+                                    <span class="spinner-border spinner-border-sm me-1 d-none" role="status"
+                                        aria-hidden="true"></span>
+                                    <span class="spin-title d-none">Loading...</span>
+                                    <span class="btn-title"><i class="ri-close-fill me-1"></i>Reject</span>
+                                </button>
+                            </div>
+
+                            <hr class="my-2" />
 
                             <div class="col-md-3">
                                 <p class="mb-1"><strong> Product:</strong></p>
@@ -47,6 +66,16 @@
                             <div class="col-md-3">
                                 <p class="mb-1"><strong> Quantity:</strong></p>
                                 <p>{{ $purchase->quantity }}</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p class="mb-1"><strong> Status:</strong></p>
+                                <p>{!! $purchase->status->badge() !!}</p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <p class="mb-1"><strong> Status Approv:</strong></p>
+                                <p>{!! $purchase->status_approv->badge() !!}</p>
                             </div>
                         </div>
                     </div> <!-- end card-body -->
@@ -72,16 +101,6 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="conversation-actions dropdown">
-                                            <button class="btn btn-sm btn-link" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class='uil uil-ellipsis-v'></i></button>
-
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Copy Message</a>
-                                                <a class="dropdown-item" href="#">Edit</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
-                                            </div>
-                                        </div>
                                     </li>
                                 @else
                                     <li class="clearfix">
@@ -96,16 +115,6 @@
                                                 <p>
                                                     {{ $comment->content }}
                                                 </p>
-                                            </div>
-                                        </div>
-                                        <div class="conversation-actions dropdown">
-                                            <button class="btn btn-sm btn-link" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class='uil uil-ellipsis-v'></i></button>
-
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Copy Message</a>
-                                                <a class="dropdown-item" href="#">Edit</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
                                             </div>
                                         </div>
                                     </li>
@@ -127,7 +136,9 @@
                                         <div class="col-sm-auto">
                                             <div class="btn-group">
                                                 <div class="d-grid">
-                                                    <button type="button" class="btn btn-success chat-send"><i
+                                                    <button type="button"
+                                                        {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
+                                                        class="btn btn-success chat-send"><i
                                                             class='uil uil-message'></i></button>
                                                 </div>
                                             </div>
@@ -148,6 +159,7 @@
 @endsection
 
 @push('js')
+    <script script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -185,32 +197,136 @@
 
             function add(response) {
                 $('.conversation-list .simplebar-content').append(`<li class="clearfix odd">
-                                        <div class="chat-avatar">
-                                            <img src="{{ asset('assets/images/user.png') }}" class="rounded"
-                                                alt="${response.user}" />
-                                            <i>${response.time}</i>
-                                        </div>
-                                        <div class="conversation-text">
-                                            <div class="ctext-wrap">
-                                                <i>${response.user}</i>
-                                                <p>
-                                                    ${response.content}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="conversation-actions dropdown">
-                                            <button class="btn btn-sm btn-link" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class='uil uil-ellipsis-v'></i></button>
-
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Copy Message</a>
-                                                <a class="dropdown-item" href="#">Edit</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
-                                            </div>
-                                        </div>
-                                    </li>`);
+                    <div class="chat-avatar">
+                        <img src="{{ asset('assets/images/user.png') }}" class="rounded" alt="${response.user}" />
+                        <i>${response.time}</i>
+                    </div>
+                    <div class="conversation-text">
+                        <div class="ctext-wrap">
+                            <i>${response.user}</i>
+                            <p>
+                                ${response.content}
+                            </p>
+                        </div>
+                    </div>
+                </li>`);
             }
             toTop();
+
+            $('.btn-approv').click(function(e) {
+                e.preventDefault();
+                var key = $(this).data('key');
+                btnLoad('.btn-approv', true)
+                Swal.fire({
+                    title: 'Apa kamu yakin?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yakin!',
+                    preConfirm: () => {
+                        return new Promise(function(resolve) {
+                            $.ajax({
+                                    type: "POST",
+                                    url: `/purchases/${key}/approv`,
+                                    dataType: 'JSON',
+                                })
+                                .done(function(myAjaxJsonResponse) {
+                                    btnLoad('.btn-approv', false)
+                                    Swal.fire(
+                                        'Verified!',
+                                        myAjaxJsonResponse.message,
+                                        'success'
+                                    ).then(function() {
+                                        location.reload();
+                                    });
+                                })
+                                .fail(function(erordata) {
+                                    btnLoad('.btn-approv', false)
+                                    if (erordata.status == 422) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Warning!',
+                                            text: erordata.responseJSON
+                                                .message,
+                                        })
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: erordata.responseJSON
+                                                .message,
+                                        })
+                                    }
+                                })
+                        })
+                    },
+                    willClose: () => {
+                        btnLoad('.btn-approv', false)
+                    }
+                });
+            });
+
+            $('.btn-reject').click(function(e) {
+                e.preventDefault();
+                var key = $(this).data('key');
+                btnLoad('.btn-reject', true)
+                Swal.fire({
+                    title: 'Apa kamu yakin?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yakin!',
+                    preConfirm: () => {
+                        return new Promise(function(resolve) {
+                            $.ajax({
+                                    type: "POST",
+                                    url: `/purchases/${key}/reject`,
+                                    dataType: 'JSON',
+                                })
+                                .done(function(myAjaxJsonResponse) {
+                                    btnLoad('.btn-reject', false)
+                                    Swal.fire(
+                                        'Rejected!',
+                                        myAjaxJsonResponse.message,
+                                        'success'
+                                    ).then(function() {
+                                        location.reload();
+                                    });
+                                })
+                                .fail(function(erordata) {
+                                    btnLoad('.btn-reject', false)
+                                    if (erordata.status == 422) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Warning!',
+                                            text: erordata.responseJSON
+                                                .message,
+                                        })
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: erordata.responseJSON
+                                                .message,
+                                        })
+                                    }
+                                })
+                        })
+                    },
+                    willClose: () => {
+                        btnLoad('.btn-reject', false)
+                    }
+                });
+            });
+
+            var btnLoad = (selector, isDisabled) => {
+                $(selector).attr('disabled', isDisabled);
+                $(selector + ' .spinner-border').toggleClass('d-none');
+                $(selector + ' .spin-title').toggleClass('d-none');
+                $(selector + ' .btn-title').toggleClass('d-none');
+            }
         });
     </script>
 @endpush

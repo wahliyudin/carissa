@@ -24,7 +24,7 @@ class ProductController extends Controller
                 return $product->name;
             })
             ->editColumn('price', function (Product $product) {
-                return $product->price;
+                return number_format($product->price, 0, ',', '.');
             })
             ->editColumn('unit', function (Product $product) {
                 return $product->unit?->name;

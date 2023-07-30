@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Supplier')
+@section('title', 'Laporan')
 
 @push('css')
     <link href="{{ asset('assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
@@ -16,11 +16,10 @@
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Master</a></li>
-                            <li class="breadcrumb-item active">Supplier</li>
+                            <li class="breadcrumb-item active">Laporan</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Supplier</h4>
+                    <h4 class="page-title">Laporan</h4>
                 </div>
             </div>
         </div>
@@ -31,18 +30,19 @@
                         <div class="row mb-2">
                             <div class="col-sm-5">
                                 <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#create-supplier"><i class="mdi mdi-plus-circle me-2"></i> Add
-                                    Suppliers</button>
+                                    data-bs-target="#create-laporan"><i class="mdi mdi-plus-circle me-2"></i> Add
+                                    Laporans</button>
                             </div>
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-centered w-100 dt-responsive nowrap" id="suppliers-datatable">
+                            <table class="table table-centered w-100 dt-responsive nowrap" id="laporans-datatable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="all">Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Address</th>
+                                        <th class="all">Product</th>
+                                        <th>Supplier</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
                                 </thead>
@@ -58,16 +58,16 @@
 @endsection
 
 @push('modal')
-    <div id="create-supplier" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="create-supplierLabel"
+    <div id="create-laporan" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="create-laporanLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="create-supplierLabel">Supplier</h4>
+                    <h4 class="modal-title" id="create-laporanLabel">Laporan</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" class="row gap-2 form-supplier">
+                    <form action="" class="row gap-2 form-laporan">
                         <input type="hidden" name="key">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -77,22 +77,27 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="phone_number">Phone Number</label>
-                                <input type="number" name="phone_number" id="phone_number" class="form-control"
-                                    placeholder="Phone Number">
+                                <label for="price">Price</label>
+                                <input type="text" name="price" id="price" class="form-control uang"
+                                    placeholder="Price">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="address">Address</label>
-                                <textarea name="address" id="address" class="form-control"></textarea>
+                                <label for="price">Unit</label>
+                                <select class="form-control select2" name="unit_id" data-toggle="select2">
+                                    <option value="" disabled selected>Select</option>
+                                    @foreach ($units as $unit)
+                                        <option value="{{ $unit->getKey() }}">{{ $unit->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
-                    <button class="btn btn-primary save-supplier" type="button">
+                    <button class="btn btn-primary save-laporan" type="button">
                         <span class="spinner-border spinner-border-sm me-1 d-none" role="status" aria-hidden="true"></span>
                         <span class="spin-title d-none">Loading...</span>
                         <span class="btn-title">Simpan</span>
@@ -108,7 +113,5 @@
     <script src="{{ asset('assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/js/pages/supplier.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/laporan.js') }}"></script>
 @endpush

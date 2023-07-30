@@ -59,4 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('purchases/{purchase}/comment', [PurchaseController::class, 'comment'])->name('purchases.comment');
     Route::post('purchases/{purchase}/send', [PurchaseController::class, 'send'])->name('purchases.send');
     Route::delete('purchases/{purchase}/destroy', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::post('purchases/{purchase}/approv', [PurchaseController::class, 'approv'])->name('purchases.approv');
+    Route::post('purchases/{purchase}/reject', [PurchaseController::class, 'reject'])->name('purchases.reject');
+    Route::post('purchases/{purchase}/diterima', [PurchaseController::class, 'diterima'])->name('purchases.diterima');
 });
