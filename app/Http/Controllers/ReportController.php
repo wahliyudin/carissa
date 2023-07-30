@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Purchase;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -10,12 +11,16 @@ class ReportController extends Controller
 {
     public function index()
     {
-        return view('laporan.index');
+        return view('report.index');
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        $data = Purchase::query()->with(['product', 'supplier'])->get();
+        $data = Purchase::query()->when($request->status, function ($query, $status) {
+            $query->where('status', $status);
+        })->when($request->status_approv, function ($query, $status_approv) {
+            $query->where('status_approv', $status_approv);
+        })->with(['product', 'supplier'])->get();
         return DataTables::of($data)
             ->editColumn('product', function (Purchase $purchase) {
                 return $purchase->product?->name;
@@ -37,5 +42,20 @@ class ReportController extends Controller
             })
             ->rawColumns(['action', 'status', 'status_approv'])
             ->make();
+    }
+
+    public function export(Request $request)
+    {
+        try {
+            return Pdf::loadView('report.pdf', [
+                'purchases' => Purchase::query()->when($request->status, function ($query, $status) {
+                    $query->where('status', $status);
+                })->when($request->status_approv, function ($query, $status_approv) {
+                    $query->where('status_approv', $status_approv);
+                })->with(['product', 'supplier'])->get()
+            ])->download();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

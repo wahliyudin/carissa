@@ -16,4 +16,13 @@ enum Status: int
             self::DITERIMA => '<span class="badge bg-success">Diterima</span>',
         };
     }
+
+    public function label()
+    {
+        return match ($this) {
+            self::DIBUAT => 'Dibuat',
+            self::DIPESAN => 'Dipesan',
+            self::DITERIMA => 'Diterima',
+        };
+    }
 }

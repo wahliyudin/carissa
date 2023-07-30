@@ -17,7 +17,11 @@ $(document).ready(function () {
         },
         ajax: {
             type: "POST",
-            url: "/reports/datatable"
+            url: "/reports/datatable",
+            data: function (data) {
+                data.status = $('select[name="status"]').val();
+                data.status_approv = $('select[name="status_approv"]').val();
+            },
         },
         pageLength: 5,
         columns: [{
@@ -60,6 +64,16 @@ $(document).ready(function () {
         }
     });
 
+    $('select[name="status"]').change(function (e) {
+        e.preventDefault();
+        datatable.ajax.reload();
+    });
+
+    $('select[name="status_approv"]').change(function (e) {
+        e.preventDefault();
+        datatable.ajax.reload();
+    });
+
     var btnLoad = (selector, isDisabled) => {
         $(selector).attr('disabled', isDisabled);
         $(selector + ' .spinner-border').toggleClass('d-none');
@@ -67,7 +81,49 @@ $(document).ready(function () {
         $(selector + ' .btn-title').toggleClass('d-none');
     }
 
-    $('.select2').select2({
-        dropdownParent: $("#create-report")
+    $('.export').click(function (e) {
+        e.preventDefault();
+        btnLoad('.export', true);
+        $.ajax({
+            type: "POST",
+            url: "/reports/export",
+            data: function (data) {
+                data.status = $('select[name="status"]').val();
+                data.status_approv = $('select[name="status_approv"]').val();
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (data) {
+                btnLoad('.export', false);
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                a.href = url;
+                a.download = 'report.pdf';
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            error: function (jqXHR, xhr, textStatus, errorThrow, exception) {
+                btnLoad('.export', false);
+                if (jqXHR.status == 500) {
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong',
+                        'error'
+                    );
+                }
+                if (jqXHR.status == 422) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan!',
+                        text: JSON.parse(jqXHR.responseText).message,
+                    })
+                }
+            }
+        });
     });
+
+    $('.select2').select2();
 });

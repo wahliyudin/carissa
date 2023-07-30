@@ -66,4 +66,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::post('reports/datatable', [ReportController::class, 'datatable'])->name('reports.datatable');
+    Route::post('reports/export', [ReportController::class, 'export'])->name('reports.export');
 });

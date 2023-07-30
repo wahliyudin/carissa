@@ -16,4 +16,13 @@ enum StatusApprov: int
             self::TOLAK => '<span class="badge bg-danger">Tolak</span>',
         };
     }
+
+    public function label()
+    {
+        return match ($this) {
+            self::MENUNGGU => 'Menunggu',
+            self::SETUJU => 'Setuju',
+            self::TOLAK => 'Tolak',
+        };
+    }
 }
