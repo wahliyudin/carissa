@@ -3,10 +3,10 @@
     <!-- Brand Logo Light -->
     <a href="{{ route('home') }}" class="logo logo-light">
         <span class="logo-lg">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
+            <img src="{{ asset('assets/images/logo.jpg') }}" style="width: 100%; height: 100%; scale: .5;" alt="logo">
         </span>
         <span class="logo-sm">
-            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
+            <img src="{{ asset('assets/images/logo.jpg') }}" alt="small logo">
         </span>
     </a>
 

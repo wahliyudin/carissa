@@ -20,7 +20,8 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app"
+        style="height: 100vh; overflow: hidden;; background-image: url('assets/images/bg.jpg'); background-repeat: no-repeat; background-size: 100%;">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -78,7 +79,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 d-flex align-items-center h-100">
             @yield('content')
         </main>
     </div>
