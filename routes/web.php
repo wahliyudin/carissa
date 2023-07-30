@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StockController;
@@ -62,4 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('purchases/{purchase}/approv', [PurchaseController::class, 'approv'])->name('purchases.approv');
     Route::post('purchases/{purchase}/reject', [PurchaseController::class, 'reject'])->name('purchases.reject');
     Route::post('purchases/{purchase}/diterima', [PurchaseController::class, 'diterima'])->name('purchases.diterima');
+
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('reports/datatable', [ReportController::class, 'datatable'])->name('reports.datatable');
 });

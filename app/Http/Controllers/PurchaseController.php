@@ -9,6 +9,7 @@ use App\Events\SendCommentEvent;
 use App\Http\Requests\Purchase\StoreRequest;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\Stock;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -147,9 +148,6 @@ class PurchaseController extends Controller
             $purchase->update([
                 'status_approv' => StatusApprov::TOLAK
             ]);
-            $purchase->product()->stock()->updateOrCreate([
-                'amount' => $purchase->quantity
-            ]);
             return response()->json([
                 'message' => 'Berhasil ditolak.'
             ]);
@@ -164,6 +162,17 @@ class PurchaseController extends Controller
             $purchase->update([
                 'status' => Status::DITERIMA
             ]);
+            $stock = $purchase?->product?->stock;
+            if ($stock) {
+                $stock->update([
+                    'amount' => $stock->amount + $purchase->quantity
+                ]);
+            } else {
+                Stock::query()->create([
+                    'amount' => $purchase->quantity
+                ]);
+            }
+
             return response()->json([
                 'message' => 'Berhasil diterima.'
             ]);

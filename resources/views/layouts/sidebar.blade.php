@@ -45,7 +45,7 @@
         <ul class="side-nav">
             <li class="side-nav-item">
                 <a href="{{ route('home') }}" class="side-nav-link">
-                    <i class="uil-home-alt"></i>
+                    <i class="ri-home-5-fill"></i>
                     <span> Dashboard </span>
                 </a>
             </li>
@@ -81,6 +81,14 @@
                     <span> Purchases </span>
                 </a>
             </li>
+            @if (auth()->user()->role == \App\Enums\Role::PURCHASE)
+                <li class="side-nav-item">
+                    <a href="{{ route('reports.index') }}" class="side-nav-link">
+                        <i class="ri-file-list-3-fill"></i>
+                        <span> Report </span>
+                    </a>
+                </li>
+            @endif
         </ul>
         <!--- End Sidemenu -->
 

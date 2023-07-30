@@ -35,12 +35,6 @@
                                     data-bs-target="#create-product"><i class="mdi mdi-plus-circle me-2"></i> Add
                                     Products</button>
                             </div>
-                            <div class="col-sm-7">
-                                <div class="text-sm-end">
-                                    <button type="button" class="btn btn-light mb-2 me-1">Import</button>
-                                    <button type="button" class="btn btn-light mb-2">Export</button>
-                                </div>
-                            </div><!-- end col-->
                         </div>
 
                         <div class="table-responsive">
