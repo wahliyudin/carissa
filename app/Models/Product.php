@@ -20,4 +20,9 @@ class Product extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
+    }
 }

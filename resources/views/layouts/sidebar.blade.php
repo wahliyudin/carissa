@@ -49,30 +49,32 @@
                     <span> Dashboard </span>
                 </a>
             </li>
-            <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#master" aria-expanded="false" aria-controls="master"
-                    class="side-nav-link">
-                    <i class="ri-dropbox-fill"></i>
-                    <span> Master </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="master">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="{{ route('master.suppliers.index') }}">Supplier</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('master.units.index') }}">Unit</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('master.products.index') }}">Product</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('master.stocks.index') }}">Stock</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            @if (auth()->user()->role == \App\Enums\Role::PURCHASE)
+                <li class="side-nav-item">
+                    <a data-bs-toggle="collapse" href="#master" aria-expanded="false" aria-controls="master"
+                        class="side-nav-link">
+                        <i class="ri-dropbox-fill"></i>
+                        <span> Master </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="master">
+                        <ul class="side-nav-second-level">
+                            <li>
+                                <a href="{{ route('master.suppliers.index') }}">Supplier</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('master.units.index') }}">Unit</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('master.products.index') }}">Product</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('master.stocks.index') }}">Stock</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
             <li class="side-nav-item">
                 <a href="{{ route('purchases.index') }}" class="side-nav-link">
                     <i class="ri-shopping-bag-3-fill"></i>

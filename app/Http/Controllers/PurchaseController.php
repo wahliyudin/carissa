@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Purchase\Status;
 use App\Enums\Purchase\StatusApprov;
+use App\Enums\Role;
 use App\Events\SendCommentEvent;
 use App\Http\Requests\Purchase\StoreRequest;
 use App\Models\Product;
@@ -25,7 +26,12 @@ class PurchaseController extends Controller
 
     public function datatable()
     {
-        $data = Purchase::query()->with(['product', 'supplier'])->get();
+        $purchase = Purchase::query()->with(['product', 'supplier']);
+        if (auth()->user()->role == Role::KITCHEN) {
+            $data = $purchase->where('status_approv', StatusApprov::MENUNGGU)->get();
+        } else {
+            $data = $purchase->get();
+        }
         return DataTables::of($data)
             ->editColumn('product', function (Purchase $purchase) {
                 return $purchase->product?->name;
@@ -140,6 +146,9 @@ class PurchaseController extends Controller
         try {
             $purchase->update([
                 'status_approv' => StatusApprov::TOLAK
+            ]);
+            $purchase->product()->stock()->updateOrCreate([
+                'amount' => $purchase->quantity
             ]);
             return response()->json([
                 'message' => 'Berhasil ditolak.'

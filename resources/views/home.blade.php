@@ -21,8 +21,8 @@
                 <div class="card rounded-0 shadow-none m-0">
                     <div class="card-body text-center">
                         <i class="ri-group-line text-muted font-24"></i>
-                        <h3><span>29</span></h3>
-                        <p class="text-muted font-15 mb-0">Suppliers</p>
+                        <h3><span>{{ $supplier }}</span></h3>
+                        <a class="text-muted font-15 mb-0" href="{{ route('master.suppliers.index') }}">Suppliers</a>
                     </div>
                 </div>
             </div>
@@ -31,8 +31,8 @@
                 <div class="card rounded-0 shadow-none m-0 border-start border-light">
                     <div class="card-body text-center">
                         <i class="ri-stack-fill text-muted font-24"></i>
-                        <h3><span>715</span></h3>
-                        <p class="text-muted font-15 mb-0">Products</p>
+                        <h3><span>{{ $product }}</span></h3>
+                        <a class="text-muted font-15 mb-0" href="{{ route('master.products.index') }}">Products</a>
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                 <div class="card rounded-0 shadow-none m-0 border-start border-light">
                     <div class="card-body text-center">
                         <i class="ri-bar-chart-2-fill text-muted font-24"></i>
-                        <h3><span>31</span></h3>
-                        <p class="text-muted font-15 mb-0">Stocks</p>
+                        <h3><span>{{ $stock }}</span></h3>
+                        <a class="text-muted font-15 mb-0" href="{{ route('master.stocks.index') }}">Stocks</a>
                     </div>
                 </div>
             </div>
@@ -51,8 +51,8 @@
                 <div class="card rounded-0 shadow-none m-0 border-start border-light">
                     <div class="card-body text-center">
                         <i class="ri-shopping-bag-3-fill text-muted font-24"></i>
-                        <h3><span>31</span></h3>
-                        <p class="text-muted font-15 mb-0">Purchases</p>
+                        <h3><span>{{ $purchase }}</span></h3>
+                        <a class="text-muted font-15 mb-0" href="{{ route('purchases.index') }}">Purchases</a>
                     </div>
                 </div>
             </div>

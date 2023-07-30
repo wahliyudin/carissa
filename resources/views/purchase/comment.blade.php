@@ -27,24 +27,28 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <button
-                                    {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
-                                    class="btn btn-success btn-approv" data-key="{{ $purchase->getKey() }}" type="button">
-                                    <span class="spinner-border spinner-border-sm me-1 d-none" role="status"
-                                        aria-hidden="true"></span>
-                                    <span class="spin-title d-none">Loading...</span>
-                                    <span class="btn-title"><i class="ri-check-fill me-1"></i>Approv</span>
-                                </button>
-                                <button
-                                    {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
-                                    class="btn btn-danger btn-reject" data-key="{{ $purchase->getKey() }}" type="button">
-                                    <span class="spinner-border spinner-border-sm me-1 d-none" role="status"
-                                        aria-hidden="true"></span>
-                                    <span class="spin-title d-none">Loading...</span>
-                                    <span class="btn-title"><i class="ri-close-fill me-1"></i>Reject</span>
-                                </button>
-                            </div>
+                            @if (auth()->user()->role == \App\Enums\Role::KITCHEN)
+                                <div class="col-md-4">
+                                    <button
+                                        {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
+                                        class="btn btn-success btn-approv" data-key="{{ $purchase->getKey() }}"
+                                        type="button">
+                                        <span class="spinner-border spinner-border-sm me-1 d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="spin-title d-none">Loading...</span>
+                                        <span class="btn-title"><i class="ri-check-fill me-1"></i>Approv</span>
+                                    </button>
+                                    <button
+                                        {{ in_array($purchase->status_approv, [\App\Enums\Purchase\StatusApprov::SETUJU, \App\Enums\Purchase\StatusApprov::TOLAK]) ? 'disabled' : '' }}
+                                        class="btn btn-danger btn-reject" data-key="{{ $purchase->getKey() }}"
+                                        type="button">
+                                        <span class="spinner-border spinner-border-sm me-1 d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="spin-title d-none">Loading...</span>
+                                        <span class="btn-title"><i class="ri-close-fill me-1"></i>Reject</span>
+                                    </button>
+                                </div>
+                            @endif
 
                             <hr class="my-2" />
 
@@ -55,7 +59,7 @@
 
                             <div class="col-md-3">
                                 <p class="mb-1"><strong> Price:</strong></p>
-                                <p>{{ $purchase->product?->price }}</p>
+                                <p>{{ number_format($purchase->product?->price, 0, ',', '.') }}</p>
                             </div>
 
                             <div class="col-md-3">

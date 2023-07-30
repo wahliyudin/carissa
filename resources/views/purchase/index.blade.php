@@ -30,9 +30,11 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-5">
-                                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#create-purchase"><i class="mdi mdi-plus-circle me-2"></i> Add
-                                    Purchases</button>
+                                @if (auth()->user()->role == \App\Enums\Role::PURCHASE)
+                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal"
+                                        data-bs-target="#create-purchase"><i class="mdi mdi-plus-circle me-2"></i> Add
+                                        Purchases</button>
+                                @endif
                             </div>
                         </div>
 
